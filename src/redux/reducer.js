@@ -1,10 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import boardSlice from "./slices/boardSlice";
-import todoSlice from "./slices/todoSlice";
+import boardReducer from "./slices/boardSlice";
+import todoReducer from "./slices/todoSlice";
 
 const rootReducer = combineReducers({
-  board: boardSlice,
-  todo: todoSlice,
+  board: boardReducer,
+  todo: todoReducer,
 });
 
 export default rootReducer;

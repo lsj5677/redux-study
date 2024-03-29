@@ -1,8 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import deleteBoardThunk from "../thunks/deleteBoardThunk";
 
 const initialState = {
   boards: [],
   selectedBoardId: null,
+
+  resetBoardSaga: {
+    pending: false,
+    data: null,
+    error: null,
+  },
 };
 
 const boardSlice = createSlice({
@@ -25,11 +32,50 @@ const boardSlice = createSlice({
       };
     },
 
-    seleteBoard: (state, action) => {
+    selectBoard: (state, action) => {
       state.selectedBoardId = action.payload;
     },
 
     resetBoard: () => initialState,
+
+    // resetBoardSaga
+    resetBoardSagaRequested: (state, action) => {
+      state.resetBoardSaga = {
+        ...state.resetBoardSaga,
+        pending: true,
+        data: null,
+        error: null,
+      };
+    },
+
+    resetBoardSagaSucceeded: (state, action) => {
+      state.resetBoardSaga = {
+        ...state.resetBoardSaga,
+        pending: false,
+        data: action.payload,
+      };
+    },
+
+    resetBoardSagaFailed: (state, action) => {
+      state.resetBoardSaga = {
+        ...state.resetBoardSaga,
+        pending: false,
+        error: action.payload,
+      };
+    },
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(deleteBoardThunk.pending, (state, action) => {
+        console.log(action.type);
+      })
+      .addCase(deleteBoardThunk.fulfilled, (state, action) => {
+        console.log(action.type);
+      })
+      .addCase(deleteBoardThunk.rejected, (state, action) => {
+        console.log(action.type);
+      });
   },
 });
 
@@ -37,8 +83,11 @@ export const {
   createBoard,
   deleteBoard,
   // updateBoard,
-  seleteBoard,
+  selectBoard,
   resetBoard,
+  resetBoardSagaRequested,
+  resetBoardSagaSucceeded,
+  resetBoardSagaFailed,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;
